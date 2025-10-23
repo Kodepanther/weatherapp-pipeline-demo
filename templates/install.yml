@@ -1,0 +1,14 @@
+# templates/install.yml
+jobs:
+  - job: Install
+    displayName: "Install Dependencies"
+    pool:
+      name: SandboxAgent
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: ${{ variables.nodeVersion }}
+        displayName: "Use Node.js ${{ variables.nodeVersion }}"
+
+      - script: npm install
+        displayName: "Install npm packages"

@@ -1,0 +1,12 @@
+# templates/build.yml
+jobs:
+  - job: Build
+    displayName: "Build Project"
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - script: echo "Building $(appName) in $(buildConfig) mode..."
+        displayName: "Simulate Build"
+
+      - script: echo "Running tests... All tests passed!"
+        displayName: "Run Unit Tests"

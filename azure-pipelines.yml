@@ -1,0 +1,43 @@
+# azure-pipelines.yml
+trigger:
+  branches:
+    include:
+      - main
+      - dev
+  paths:
+    include:
+      - src/
+    exclude:
+      - README.md
+
+pr:
+  branches:
+    include:
+      - main
+
+schedules:
+  - cron: "0 6 * * 1-5"
+    displayName: "Weekday morning build"
+    branches:
+      include:
+        - main
+    always: true
+
+variables:
+- template: variables.yml
+
+stages:
+  - stage: Build
+    displayName: "Build WeatherApp"
+    jobs:
+      - template: templates/install.yml
+      - template: templates/build.yml
+
+  - stage: Deploy
+    displayName: "Deploy WeatherApp"
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - template: templates/deploy.yml
+        parameters:
+          environment: "staging"
