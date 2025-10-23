@@ -14,14 +14,7 @@ pr:
   branches:
     include:
       - main
-
-schedules:
-  - cron: "0 6 * * 1-5"
-    displayName: "Weekday morning build"
-    branches:
-      include:
-        - main
-    always: true
+      - dev
 
 variables:
 - template: variables.yml
@@ -33,11 +26,20 @@ stages:
       - template: templates/install.yml
       - template: templates/build.yml
 
-  - stage: Deploy
-    displayName: "Deploy WeatherApp"
+  - stage: Deploy_Staging
+    displayName: "Deploy to Staging (dev branch)"
     dependsOn: Build
-    condition: succeeded()
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
     jobs:
       - template: templates/deploy.yml
         parameters:
           environment: "staging"
+
+  - stage: Deploy_Production
+    displayName: "Deploy to Production (main branch)"
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: templates/deploy.yml
+        parameters:
+          environment: "production"
