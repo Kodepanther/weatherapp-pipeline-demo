@@ -3,7 +3,7 @@ jobs:
   - job: Install
     displayName: "Install Dependencies"
     pool:
-      name: SandboxAgent
+      name: SandboxAgent  
     steps:
       - task: NodeTool@0
         inputs:
@@ -12,3 +12,4 @@ jobs:
 
       - script: npm install
         displayName: "Install npm packages"
+      - script: echo "Dependencies installed."
