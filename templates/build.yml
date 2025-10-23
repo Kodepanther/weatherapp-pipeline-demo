@@ -3,7 +3,7 @@ jobs:
   - job: Build
     displayName: "Build Project"
     pool:
-      vmImage: ubuntu-latest
+      name: SandboxAgent
     steps:
       - script: echo "Building $(appName) in $(buildConfig) mode..."
         displayName: "Simulate Build"
